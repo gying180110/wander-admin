@@ -5,6 +5,7 @@ import {
   listAnnouncementsApi,
   playAnnouncementsApi,
 } from '../api/announcement'
+import { normalizeText } from '../utils/text'
 
 const allList = ref([])
 const playList = ref([])
@@ -83,14 +84,14 @@ onMounted(load)
     <section class="page-card note-list-card">
       <h2>公告播放预览</h2>
       <div class="answer modern-answer" v-if="now">
-        <h3>{{ now.title }}</h3>
-        <p>{{ now.content }}</p>
+        <h3>{{ normalizeText(now.title) }}</h3>
+        <p>{{ normalizeText(now.content) }}</p>
       </div>
       <h2 style="margin-top: 16px">全部公告</h2>
       <ul class="list modern-list">
         <li v-for="item in allList" :key="item.id">
-          <h3>{{ item.title }} <span v-if="item.pinned === 1">[置顶]</span></h3>
-          <p>{{ item.content }}</p>
+          <h3>{{ normalizeText(item.title) }} <span v-if="item.pinned === 1">[置顶]</span></h3>
+          <p>{{ normalizeText(item.content) }}</p>
           <p class="tip">过期时间: {{ item.expireTime || '不过期' }}</p>
         </li>
       </ul>

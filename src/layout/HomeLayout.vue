@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { playAnnouncementsApi } from '../api/announcement'
+import { normalizeText } from '../utils/text'
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -91,8 +92,8 @@ onMounted(async () => {
         <h1>{{ pageTitle }}</h1>
         <p>统一设计语言、清晰信息层级、可扩展后台布局</p>
         <div v-if="currentNotice" class="notice-player">
-          <strong>{{ currentNotice.title }}</strong>
-          <span>{{ currentNotice.content }}</span>
+          <strong>{{ normalizeText(currentNotice.title) }}</strong>
+          <span>{{ normalizeText(currentNotice.content) }}</span>
         </div>
       </header>
       <router-view />

@@ -1,6 +1,7 @@
 <script setup>
 import { reactive, ref, onMounted } from 'vue'
 import { createChangelogApi, listChangelogApi } from '../api/changelog'
+import { normalizeText } from '../utils/text'
 
 const logs = ref([])
 const msg = ref('')
@@ -55,7 +56,7 @@ onMounted(load)
       <ul class="list modern-list">
         <li v-for="item in logs" :key="item.id">
           <h3>{{ item.versionNo }} | {{ item.moduleName }}</h3>
-          <p>{{ item.changePoint }}</p>
+          <p>{{ normalizeText(item.changePoint) }}</p>
           <p class="tip">{{ item.changeFile }}</p>
           <p class="tip">commit: {{ item.gitCommit || 'unknown' }}</p>
         </li>
