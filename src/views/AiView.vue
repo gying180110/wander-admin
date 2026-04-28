@@ -28,14 +28,23 @@ const send = async () => {
 </script>
 
 <template>
-  <div class="page-card">
-    <h1>AI 助手</h1>
-    <textarea v-model="form.prompt" rows="5" placeholder="输入你的问题..." />
-    <button :disabled="loading" @click="send">
-      {{ loading ? '处理中...' : '发送给 AI' }}
-    </button>
+  <div class="page-card ai-card">
+    <div class="section-title">
+      <h2>AI 助手</h2>
+      <span>实时问答</span>
+    </div>
+    <textarea
+      v-model="form.prompt"
+      rows="6"
+      placeholder="输入你的问题，例如：帮我整理今天的工作计划..."
+    />
+    <div class="action-row">
+      <button :disabled="loading" @click="send">
+        {{ loading ? '处理中...' : '发送给 AI' }}
+      </button>
+    </div>
     <p v-if="msg" class="error">{{ msg }}</p>
-    <div v-if="answer" class="answer">
+    <div v-if="answer" class="answer modern-answer">
       <h3>AI 回复</h3>
       <p>{{ answer }}</p>
     </div>

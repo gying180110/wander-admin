@@ -30,14 +30,23 @@ const login = async () => {
 </script>
 
 <template>
-  <div class="page-card">
-    <h1>登录系统</h1>
-    <label>账号</label>
-    <input v-model="form.username" placeholder="请输入账号" />
-    <label>密码</label>
-    <input v-model="form.password" type="password" placeholder="请输入密码" />
-    <button :disabled="loading" @click="login">{{ loading ? '登录中...' : '登录' }}</button>
-    <p class="tip">默认账号：admin / 123456</p>
-    <p v-if="msg" class="error">{{ msg }}</p>
+  <div class="login-shell">
+    <section class="login-banner">
+      <h1>Wander Workspace</h1>
+      <p>更现代的后台系统，聚合登录、笔记与 AI 能力。</p>
+    </section>
+
+    <section class="login-card">
+      <h2>欢迎登录</h2>
+      <p class="tip">默认账号：admin / 123456</p>
+      <label>账号</label>
+      <input v-model="form.username" placeholder="请输入账号" />
+      <label>密码</label>
+      <input v-model="form.password" type="password" placeholder="请输入密码" />
+      <button :disabled="loading" @click="login">
+        {{ loading ? '登录中...' : '进入系统' }}
+      </button>
+      <p v-if="msg" class="error">{{ msg }}</p>
+    </section>
   </div>
 </template>

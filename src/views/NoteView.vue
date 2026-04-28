@@ -42,22 +42,29 @@ onMounted(loadNotes)
 </script>
 
 <template>
-  <div class="page-card">
-    <h1>笔记管理</h1>
-    <label>标题</label>
-    <input v-model="form.title" placeholder="输入笔记标题" />
-    <label>内容</label>
-    <textarea v-model="form.content" rows="4" placeholder="输入笔记内容" />
-    <button @click="submit">保存笔记</button>
-    <p v-if="msg" class="tip">{{ msg }}</p>
+  <div class="notes-grid">
+    <section class="page-card compose-card">
+      <h2>新建笔记</h2>
+      <label>标题</label>
+      <input v-model="form.title" placeholder="输入笔记标题" />
+      <label>内容</label>
+      <textarea v-model="form.content" rows="6" placeholder="输入笔记内容" />
+      <button @click="submit">保存笔记</button>
+      <p v-if="msg" class="tip">{{ msg }}</p>
+    </section>
 
-    <h2>我的笔记</h2>
-    <p v-if="loading">加载中...</p>
-    <ul v-else class="list">
-      <li v-for="item in notes" :key="item.id">
-        <h3>{{ item.title }}</h3>
-        <p>{{ item.content }}</p>
-      </li>
-    </ul>
+    <section class="page-card note-list-card">
+      <div class="section-title">
+        <h2>我的笔记</h2>
+        <span>{{ notes.length }} 条</span>
+      </div>
+      <p v-if="loading">加载中...</p>
+      <ul v-else class="list modern-list">
+        <li v-for="item in notes" :key="item.id">
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.content }}</p>
+        </li>
+      </ul>
+    </section>
   </div>
 </template>

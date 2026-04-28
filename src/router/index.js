@@ -4,6 +4,9 @@ import LoginView from '../views/LoginView.vue'
 import HomeLayout from '../layout/HomeLayout.vue'
 import NoteView from '../views/NoteView.vue'
 import AiView from '../views/AiView.vue'
+import UserView from '../views/UserView.vue'
+import AnnouncementView from '../views/AnnouncementView.vue'
+import ChangeLogView from '../views/ChangeLogView.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -15,7 +18,10 @@ const router = createRouter({
       children: [
         { path: '', redirect: '/notes' },
         { path: '/notes', component: NoteView },
-        { path: '/ai', component: AiView },
+        { path: '/ai', component: AiView, meta: { perm: 'AI_CHAT' } },
+        { path: '/users', component: UserView, meta: { perm: 'USER_MANAGE' } },
+        { path: '/announcements', component: AnnouncementView, meta: { perm: 'ANNOUNCEMENT_MANAGE' } },
+        { path: '/changelog', component: ChangeLogView, meta: { perm: 'CHANGELOG_MANAGE' } },
       ],
     },
   ],
@@ -27,6 +33,9 @@ router.beforeEach((to) => {
     return '/login'
   }
   if (to.path === '/login' && authStore.token) {
+    return '/notes'
+  }
+  if (to.meta.perm && !authStore.isAdmin && !authStore.permissionSet.has(to.meta.perm)) {
     return '/notes'
   }
   return true
