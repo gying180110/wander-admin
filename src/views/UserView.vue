@@ -4,6 +4,12 @@ import { createUserApi, listUsersApi } from '../api/user'
 
 const users = ref([])
 const message = ref('')
+const allPermissions = [
+  'USER_MANAGE',
+  'AI_CHAT',
+  'ANNOUNCEMENT_MANAGE',
+  'CHANGELOG_MANAGE',
+]
 const form = reactive({
   username: '',
   password: '',
@@ -19,7 +25,19 @@ const permissionTemplates = {
 }
 
 const onRoleChange = () => {
-  form.permissions = permissionTemplates[form.roleCode] || ''
+  resetByRole()
+}
+
+const selectedPermissions = ref([])
+const syncPermissionString = () => {
+  form.permissions = selectedPermissions.value.join(',')
+}
+
+const resetByRole = () => {
+  selectedPermissions.value = (permissionTemplates[form.roleCode] || '')
+    .split(',')
+    .filter(Boolean)
+  syncPermissionString()
 }
 
 const loadUsers = async () => {
@@ -37,6 +55,7 @@ const submit = async () => {
     form.username = ''
     form.password = ''
     form.nickname = ''
+    resetByRole()
     await loadUsers()
   } catch (e) {
     message.value = e.message
@@ -44,6 +63,7 @@ const submit = async () => {
 }
 
 onMounted(loadUsers)
+onMounted(resetByRole)
 </script>
 
 <template>
@@ -62,8 +82,18 @@ onMounted(loadUsers)
         <option value="EDITOR">EDITOR</option>
         <option value="VIEWER">VIEWER</option>
       </select>
-      <label>权限(逗号分隔)</label>
-      <input v-model="form.permissions" placeholder="AI_CHAT,ANNOUNCEMENT_MANAGE" />
+      <label>权限勾选</label>
+      <div class="perm-grid">
+        <label v-for="perm in allPermissions" :key="perm" class="perm-item">
+          <input
+            type="checkbox"
+            :value="perm"
+            v-model="selectedPermissions"
+            @change="syncPermissionString"
+          />
+          <span>{{ perm }}</span>
+        </label>
+      </div>
       <button @click="submit">保存用户</button>
       <p class="tip">{{ message }}</p>
     </section>

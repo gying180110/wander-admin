@@ -57,6 +57,7 @@ onMounted(load)
           <h3>{{ item.versionNo }} | {{ item.moduleName }}</h3>
           <p>{{ item.changePoint }}</p>
           <p class="tip">{{ item.changeFile }}</p>
+          <p class="tip">commit: {{ item.gitCommit || 'unknown' }}</p>
         </li>
       </ul>
     </section>

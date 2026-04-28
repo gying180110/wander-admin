@@ -17,7 +17,9 @@ const form = reactive({
   title: '',
   content: '',
   active: 1,
+  pinned: 0,
   playSeconds: 5,
+  expireTime: '',
   sortNo: 100,
 })
 
@@ -48,6 +50,7 @@ const submit = async () => {
     msg.value = '公告发布成功'
     form.title = ''
     form.content = ''
+    form.expireTime = ''
     await load()
   } catch (e) {
     msg.value = e.message
@@ -67,6 +70,13 @@ onMounted(load)
       <textarea v-model="form.content" rows="5" />
       <label>播放秒数</label>
       <input v-model.number="form.playSeconds" type="number" />
+      <label>置顶</label>
+      <select v-model.number="form.pinned">
+        <option :value="0">否</option>
+        <option :value="1">是</option>
+      </select>
+      <label>过期时间</label>
+      <input v-model="form.expireTime" type="datetime-local" />
       <button @click="submit">发布公告</button>
       <p class="tip">{{ msg }}</p>
     </section>
@@ -79,8 +89,9 @@ onMounted(load)
       <h2 style="margin-top: 16px">全部公告</h2>
       <ul class="list modern-list">
         <li v-for="item in allList" :key="item.id">
-          <h3>{{ item.title }}</h3>
+          <h3>{{ item.title }} <span v-if="item.pinned === 1">[置顶]</span></h3>
           <p>{{ item.content }}</p>
+          <p class="tip">过期时间: {{ item.expireTime || '不过期' }}</p>
         </li>
       </ul>
     </section>
